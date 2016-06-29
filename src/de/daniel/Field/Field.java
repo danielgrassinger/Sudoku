@@ -2,18 +2,29 @@ package de.daniel.Field;
 
 public class Field {
 	protected int[][] field;
+	protected int[][] initField;
 
 	public Field() {
 		field = new int[9][9];
+		initField= new int[9][9];
 	}
 
 	public int[][] getField() {
 		return field.clone();
 	}
+	
+	public int[][] getInitField(){
+		return initField.clone();
+	}
 
 	public boolean setField(int[][] field) {
 		this.field = field.clone();
 		return true;
+	}
+	
+	public void setInitField(int[][] field){
+		initField=field.clone();
+		setField(field);
 	}
 	
 	public boolean isCorrect() {

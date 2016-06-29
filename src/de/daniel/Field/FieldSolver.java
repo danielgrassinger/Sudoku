@@ -4,13 +4,15 @@ public class FieldSolver extends Field {
 	// int row = 0;
 	// int col = 0;
 
-	public void solveSudokuExtern() {
+	public boolean solveSudokuExtern() {
 
 		int[][] solveField = field.clone();
 		if (solveSudoku(0, 0)) {
 			field = solveField;
+			return true;
 		} else {
-			System.err.println("Sudoku was no solved");
+			//System.err.println("was not possible to solve");
+			return false;
 		}
 
 	}
@@ -80,10 +82,13 @@ public class FieldSolver extends Field {
 	private boolean checkBox(int grid[][], int row, int col, int num) {
 		int rowstart=row/3;
 		int colstart=col/3;
-		for (int y = 0; row < 3; row++)
-			for (int x = 0; col < 3; col++)
-				if (grid[rowstart +y][colstart+x] == num)
+		for (int y = 0; y < 3; y++){
+			for (int x = 0; x < 3; x++){
+				if (grid[rowstart*3 +y][colstart*3+x] == num){
 					return false;
+				}
+			}
+		}
 		return true;
 	}
 }

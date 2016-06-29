@@ -7,21 +7,21 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:controller="de.daniel.GUI.Sudoku" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="de.daniel.GUI.WindowController" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Datei">
           <items>
             <MenuItem onAction="#newGame" mnemonicParsing="false" accelerator="Shortcut+N" text="Neu" />
-            <MenuItem mnemonicParsing="false" accelerator="Shortcut+R" text="Neustart" />
+            <MenuItem onAction="#restart" mnemonicParsing="false" accelerator="Shortcut+R" text="Neustart" />
             <MenuItem onAction="#load" mnemonicParsing="false" accelerator="Shortcut+L" text="Laden" />
 	            
             <SeparatorMenuItem mnemonicParsing="false" />
             <Menu mnemonicParsing="false" text="Speichern">
             	<items>
 	            	<MenuItem onAction="#saveCSV" mnemonicParsing="false" accelerator="Shortcut+S" text="CSV" />
-            		<MenuItem onAction="#savePNG" mnemonicParsing="false" accelerator="Shortcut+J" text="JPG" />
+            		<MenuItem onAction="#savePNG" mnemonicParsing="false" accelerator="Shortcut+J" text="PNG" />
 	            </items>
             </Menu>
             <MenuItem onAction="#exit" mnemonicParsing="false" accelerator="Shortcut+Q" text="Beenden" />
@@ -41,7 +41,7 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
     <children>
     	<Button onAction="#newGame" layoutX="14.0" layoutY="22.0" prefWidth="100" mnemonicParsing="false" text="Neu" />
-        <Button layoutX="14.0" layoutY="57.0" prefWidth="100" mnemonicParsing="false" text="Neustart" />
+        <Button onAction="#restart" layoutX="14.0" layoutY="57.0" prefWidth="100" mnemonicParsing="false" text="Neustart" />
         <Button onAction="#solve" layoutX="14.0" layoutY="92.0" prefWidth="100" mnemonicParsing="false" text="Lösen" />
         <Button onAction="#load" layoutX="14.0" layoutY="126.0" prefWidth="100" mnemonicParsing="false" text="Laden" />
         
