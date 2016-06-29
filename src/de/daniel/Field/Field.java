@@ -1,27 +1,24 @@
 package de.daniel.Field;
 
 public class Field {
-	private int[][] field;
+	protected int[][] field;
 
 	public Field() {
 		field = new int[9][9];
 	}
 
 	public int[][] getField() {
-		return field;
+		return field.clone();
 	}
 
 	public boolean setField(int[][] field) {
-		this.field = field;
+		this.field = field.clone();
 		return true;
 	}
-
+	
 	public boolean isCorrect() {
-		int[] checkField = new int[9];
-		for (int i = 0; i < 9; i++) {
-			checkField[i] = field[0][i];
-		}
-		return checkArray(checkField);
+		
+		return (checkColumns()&& checkRows() && checkBoxes());
 	}
 
 	private boolean checkColumns() {
@@ -32,7 +29,7 @@ public class Field {
 		return true;
 	}
 
-	private boolean checkColumn(int column) {
+	protected boolean checkColumn(int column) {
 		int[] checkField = new int[9];
 		for (int i = 0; i < 9; i++) {
 			checkField[i] = field[i][column];
@@ -50,7 +47,7 @@ public class Field {
 		return true;
 	}
 
-	private boolean checkRow(int row) {
+	protected boolean checkRow(int row) {
 		int[] checkField = new int[9];
 		for (int i = 0; i < 9; i++) {
 			checkField[i] = field[row][i];
@@ -59,17 +56,17 @@ public class Field {
 		return checkArray(checkField);
 	}
 
-	private boolean checkSmallFields() {
+	private boolean checkBoxes() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (!checkSmallField(j,i))
+				if (!checkBox(j,i))
 					return false;
 			}
 		}
 		return true;
 	}
 
-	private boolean checkSmallField(int x, int y) {
+	protected boolean checkBox(int x, int y) {
 		int[] checkField = new int[9];
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
