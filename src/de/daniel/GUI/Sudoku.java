@@ -48,22 +48,37 @@ import javax.imageio.ImageIO;
 
 import de.daniel.Field.*;
 
+/**
+ * Main class and application start point
+ */
+
 public class Sudoku extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		//load the fxml layout from file
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GUI.fxml"));
 		Parent root = loader.load();
+		
+		//get the controller of the application
 		WindowController controller = loader.getController();
+		
+		//set the stage for further use in the controller
 		controller.setStage(stage);
 
 		stage.setTitle("Sudoku");
 		stage.setScene(new Scene(root, 900, 800));
+		
+		//show the main window
 		stage.show();
 
 	}
 
+	
 	public static void main(String[] args) {
+		
+		//launch the application
 		Application.launch(Sudoku.class, args);
 	}
 }

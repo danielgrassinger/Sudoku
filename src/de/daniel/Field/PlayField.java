@@ -58,7 +58,7 @@ public class PlayField extends Field {
 				}
 			}
 			solver.setField(testField);
-			if (solver.solveSudokuExtern()) {
+			if (solver.solve()) {
 				ex = true;
 			}
 		} while (!ex);

@@ -1,10 +1,9 @@
 package de.daniel.Field;
 
 public class FieldSolver extends Field {
-	// int row = 0;
-	// int col = 0;
+	
 
-	public boolean solveSudokuExtern() {
+	public boolean solve() {
 
 		int[][] solveField = field.clone();
 		if (solveSudoku(0, 0)) {
