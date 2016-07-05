@@ -4,28 +4,59 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
 
+/**
+ * This class is the play field and has metods to solve the Sudoku.
+ *
+ */
 public class Field {
+	
+	//the actual play field
 	protected int[][] field;
+	
+	//the play field when game was started or loaded
+	//this field is used to reset the field
 	protected int[][] initField;
 
+	
 	public Field() {
 		field = new int[9][9];
 		initField= new int[9][9];
 	}
 
+	/**
+	 * This method returns the actual play field.
+	 * 
+	 * @return the actual play field
+	 */
 	public int[][] getField() {
 		return field.clone();
 	}
 	
+	/**
+	 * This method returns the play field on its initial state.
+	 * 
+	 * @return the play field on its initial state
+	 */
 	public int[][] getInitField(){
 		return initField.clone();
 	}
 
+	/**
+	 * This method set the current play field.
+	 * 
+	 * @param field 
+	 * @return True if the field could be set, false if the field could not be set
+	 */
 	public boolean setField(int[][] field) {
 		this.field = field.clone();
 		return true;
 	}
 	
+	/**
+	 * This method set the initial play field.
+	 * 
+	 * @param field 
+	 */
 	public void setInitField(int[][] field){
 		initField=field.clone();
 		setField(field);
@@ -47,7 +78,7 @@ public class Field {
 
 		Deque<Integer> stack;
 
-		boolean ex = false;
+		boolean exit = false;
 		do {
 			newField = new int[9][9];
 
@@ -80,14 +111,23 @@ public class Field {
 			}
 			solver.setField(testField);
 			if (solver.solve()) {
-				ex = true;
+				exit = true;
 			}
-		} while (!ex);
+		} while (!exit);
 
 		field = newField;
 		setInitField(newField);
 	}
 
+	/**
+	 * This method check if the number would fit in this field.
+	 * 
+	 * @param grid the current Sudoku play field
+	 * @param row the row of the field
+	 * @param col the column of the field
+	 * @param num the number which is tested to fit in this field
+	 * @return returns if the number fit in the Sudoku grid
+	 */
 	private boolean isSafe(int grid[][], int row, int col, int num) {
 		/*
 		 * Check if 'num' is not already placed in current row, current column
@@ -96,98 +136,35 @@ public class Field {
 		return checkRow(grid, row, num) && checkColumn(grid, col, num) && checkBox(grid, row, col, num);
 	}
 	
-	public boolean isCorrect() {
-		
-		return (checkColumns()&& checkRows() && checkBoxes());
-	}
-
-	private boolean checkColumns() {
-		for (int i = 0; i < 9; i++) {
-			if (!checkColumn(i))
-				return false;
-		}
-		return true;
-	}
-
-	protected boolean checkColumn(int column) {
-		int[] checkField = new int[9];
-		for (int i = 0; i < 9; i++) {
-			checkField[i] = field[i][column];
-		}
-
-		return checkArray(checkField);
-
-	}
-
-	private boolean checkRows() {
-		for (int i = 0; i < 9; i++) {
-			if (!checkRow(i))
-				return false;
-		}
-		return true;
-	}
-
-	protected boolean checkRow(int row) {
-		int[] checkField = new int[9];
-		for (int i = 0; i < 9; i++) {
-			checkField[i] = field[row][i];
-		}
-
-		return checkArray(checkField);
-	}
-
-	private boolean checkBoxes() {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (!checkBox(j,i))
-					return false;
-			}
-		}
-		return true;
-	}
-
-	protected boolean checkBox(int x, int y) {
-		int[] checkField = new int[9];
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				checkField[3 * j + i] = field[i][j];
-			}
-		}
-
-		return checkArray(checkField);
-	}
-
-	private boolean checkArray(int[] array) {
-
-		for (int i = 0; i < 9 - 1; i++) {
-			if (array[i] <= 9 && array[i] >= 1) {
-				for (int j = i + 1; j < 9; j++) {
-					if (array[i] == array[j])
-						return false;
-				}
-			}
-		}
-		return true;
-	}
+	/**
+	 * This method solve the Sudoku.
+	 * 
+	 * @return if it was possible to solve this Sudoku
+	 */
 	
 	public boolean solve() {
 
-		int[][] solveField = field.clone();
 		if (solveSudoku(0, 0)) {
-			field = solveField;
 			return true;
 		} else {
-			//System.err.println("was not possible to solve");
 			return false;
 		}
 
 	}
 
+	/**
+	 * This method is a helper function to solve the Sudoku.
+	 * 
+	 * @param row row of the next field
+	 * @param col column of the next field
+	 *
+	 */
 	private boolean solveSudoku(int row, int col) {
 
 		// If there is no unassigned location, we are done
-		if (!FindUnassignedLocation(field, row, col))
+		if (!FindUnassignedLocation(field)) {
 			return true; // success!
+		}
 
 		while (field[row][col] != 0) {
 			row = (col == 8 ? row + 1 : row);
@@ -196,12 +173,12 @@ public class Field {
 		}
 		// consider digits 1 to 9
 		for (int num = 1; num <= 9; num++) {
-			// if looks promising
+			
 			if (isSafe(field, row, col, num)) {
-				// make tentative assignment
+				
 				field[row][col] = num;
 
-				// return, if success, yay!
+				// return, if success
 				if (solveSudoku((col == 8 ? row + 1 : row), (col + 1) % 9))
 					return true;
 
@@ -212,14 +189,28 @@ public class Field {
 		return false; // this triggers backtracking
 	}
 
-	private boolean FindUnassignedLocation(int grid[][], int row, int col) {
-		for (row = 0; row < 9; row++)
-			for (col = 0; col < 9; col++)
+	/**
+	 * This method check if the Sudoku is completely solved.
+	 * @param grid The play field to be checked.
+	 * @return if the Sudoku is completely solved.
+	 */
+	private boolean FindUnassignedLocation(int grid[][]){ 
+		
+		for (int row = 0; row < 9; row++)
+			for (int col = 0; col < 9; col++)
 				if (grid[row][col] == 0)
 					return true;
 		return false;
 	}
 
+	/**
+	 * This is method if the number would fit in this row.
+	 * 
+	 * @param grid the current Sudoku play field
+	 * @param row the row of the field
+	 * @param num the number which is tested to fit in this field
+	 * @return returns if the number fit in the Sudoku grid
+	 */
 	private boolean checkRow(int grid[][], int row, int num) {
 		for (int i = 0; i < 9; i++) {
 			if (grid[row][i] == num)
@@ -228,6 +219,13 @@ public class Field {
 		return true;
 	}
 
+	/**
+	 * This is method if the number would fit in this row.
+	 * 
+	 * @param grid the current Sudoku play field
+	 * @param num the number which is tested to fit in this field
+	 * @return returns if the number fit in the Sudoku grid
+	 */
 	private boolean checkColumn(int grid[][], int column, int num) {
 		for (int i = 0; i < 9; i++) {
 			if (grid[i][column] == num)
@@ -237,6 +235,14 @@ public class Field {
 
 	}
 
+	/**
+	 * This is method if the number would fit in this row.
+	 * 
+	 * @param grid the current Sudoku play field
+	 * @param row the row of the field
+	 * @param num the number which is tested to fit in this field
+	 * @return returns if the number fit in the Sudoku grid
+	 */
 	private boolean checkBox(int grid[][], int row, int col, int num) {
 		int rowstart=row/3;
 		int colstart=col/3;
