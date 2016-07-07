@@ -62,7 +62,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void newGame(ActionEvent event) {
+	private void newGame(ActionEvent event) {
 
 		playField = new Field();
 		playField.init();
@@ -78,7 +78,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void restart(ActionEvent event) {
+	private void restart(ActionEvent event) {
 
 		// set the play field with the initial play field
 		playField.setField(playField.getInitField());
@@ -94,7 +94,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void solve(ActionEvent event) {
+	private void solve(ActionEvent event) {
 		// solve the Sudoku
 		playField.solve();
 		setField(playField.getField());
@@ -106,7 +106,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void load(ActionEvent event) {
+	private void load(ActionEvent event) {
 
 		// generate a new file chooser object
 		FileChooser fileChooser = new FileChooser();
@@ -172,7 +172,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void saveCSV(ActionEvent event) {
+	private void saveCSV(ActionEvent event) {
 
 		// generate a new file chooser object
 		FileChooser fileChooser = new FileChooser();
@@ -224,7 +224,7 @@ public class WindowController implements Initializable {
 	 * @param event
 	 */
 	@FXML
-	protected void savePNG(ActionEvent event) {
+	private void savePNG(ActionEvent event) {
 
 		// generate a new file chooser object
 		FileChooser fileChooser = new FileChooser();
