@@ -47,6 +47,8 @@ import javafx.stage.Stage;
  */
 public class WindowController implements Initializable {
 
+	private final int fieldsize=9;
+	
 	// Stage object from the start method
 	private Stage myStage;
 
@@ -125,23 +127,23 @@ public class WindowController implements Initializable {
 				return;
 
 			// create an new field array
-			int[][] loadField = new int[9][9];
+			int[][] loadField = new int[fieldsize][fieldsize];
 
 			// read the file with a BufferedReader
 			BufferedReader filereader = new BufferedReader(new FileReader(file));
 
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < fieldsize; i++) {
 
 				// split a line into single fields
 				String[] line = filereader.readLine().split(";");
 
 				// if size of columns is wrong throw a exception
-				if (line.length != 9) {
+				if (line.length != fieldsize) {
 					filereader.close();
 					throw new IOException("Could not load CSV file in right format");
 				}
 				// copy the values of this line into the field array
-				for (int j = 0; j < 9; j++) {
+				for (int j = 0; j < fieldsize; j++) {
 					loadField[i][j] = Integer.parseInt(line[j]);
 				}
 			}
@@ -194,9 +196,9 @@ public class WindowController implements Initializable {
 
 			// create the string to save in the CSV file
 			StringBuilder saveString = new StringBuilder();
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < fieldsize; i++) {
 				StringJoiner joiner = new StringJoiner(";");
-				for (int j = 0; j < 9; j++) {
+				for (int j = 0; j < fieldsize; j++) {
 					joiner.add(String.valueOf(field[i][j]));
 				}
 				saveString.append(joiner.toString() + "\n");
@@ -281,13 +283,13 @@ public class WindowController implements Initializable {
 	 */
 	private void setField(int[][] field) {
 		// for every row
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < fieldsize; i++) {
 			// for every column
-			for (int j = 0; j < 9; j++) {
+			for (int j = 0; j < fieldsize; j++) {
 				int value = field[i][j];
 
 				// if value between 1 and 9 set the value, else set empty string
-				if (value >= 1 && value <= 9) {
+				if (value >= 1 && value <= fieldsize) {
 					sudokuFields[i][j].setText("" + value);
 				} else {
 					sudokuFields[i][j].setText("");
@@ -304,12 +306,12 @@ public class WindowController implements Initializable {
 	private void setPlayField() {
 
 		// init a new field array
-		int[][] newField = new int[9][9];
+		int[][] newField = new int[fieldsize][fieldsize];
 
 		// for every row
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < fieldsize; i++) {
 			// for every column
-			for (int j = 0; j < 9; j++) {
+			for (int j = 0; j < fieldsize; j++) {
 				String text = sudokuFields[i][j].getText();
 
 				try {
@@ -372,12 +374,12 @@ public class WindowController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		//init the text field array
-		sudokuFields = new TextField[9][9];
+		sudokuFields = new TextField[fieldsize][fieldsize];
 		
 		//for every row
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < fieldsize; i++) {
 			//for every column
-			for (int j = 0; j < 9; j++) {
+			for (int j = 0; j < fieldsize; j++) {
 				
 				//create new text field
 				TextField field = new TextField("");

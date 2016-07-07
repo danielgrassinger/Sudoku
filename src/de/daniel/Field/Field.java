@@ -9,7 +9,7 @@ import java.util.Random;
  *
  */
 public class Field {
-	private final int fieldzize=9;
+	private final int fieldsize=9;
 
 	// the actual play field
 	protected int[][] field;
@@ -19,8 +19,8 @@ public class Field {
 	protected int[][] initField;
 
 	public Field() {
-		field = new int[fieldzize][fieldzize];
-		initField = new int[fieldzize][fieldzize];
+		field = new int[fieldsize][fieldsize];
+		initField = new int[fieldsize][fieldsize];
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Field {
 
 		do {
 			// init a new play field array
-			newField = new int[9][9];
+			newField = new int[fieldsize][fieldsize];
 
 			// generate new Random
 			Random random = new Random();
@@ -93,7 +93,7 @@ public class Field {
 			// fill the stack with twenty numbers from 1 to 9
 			stack = new ArrayDeque<Integer>(20);
 			for (int i = 0; i < 25; i++) {
-				stack.add((i % 9) + 1);
+				stack.add((i % fieldsize) + 1);
 			}
 
 			// place the twenty numbers in the play field
@@ -101,8 +101,8 @@ public class Field {
 				boolean terminate = false;
 				do {
 					// find a x and y position for number
-					int x = Math.abs(random.nextInt()) % 9;
-					int y = Math.abs(random.nextInt()) % 9;
+					int x = Math.abs(random.nextInt()) % fieldsize;
+					int y = Math.abs(random.nextInt()) % fieldsize;
 
 					// if the field is empty and the number fit in than set the
 					// number
@@ -116,11 +116,11 @@ public class Field {
 			}
 
 			// check if it is possible to solve this Sudoku
-			int[][] testField = new int[9][9];
+			int[][] testField = new int[fieldsize][fieldsize];
 
 			// copy the field
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
+			for (int i = 0; i < fieldsize; i++) {
+				for (int j = 0; j < fieldsize; j++) {
 					testField[i][j] = newField[i][j];
 				}
 			}
@@ -191,19 +191,19 @@ public class Field {
 		}
 
 		while (field[row][col] != 0) {
-			row = (col == 8 ? row + 1 : row);
-			col = (col + 1) % 9;
+			row = (col == fieldsize-1 ? row + 1 : row);
+			col = (col + 1) % fieldsize;
 
 		}
 		// consider digits 1 to 9
-		for (int num = 1; num <= 9; num++) {
+		for (int num = 1; num <= fieldsize; num++) {
 
 			if (isSafe(field, row, col, num)) {
 
 				field[row][col] = num;
 
 				// return, if success
-				if (solveSudoku((col == 8 ? row + 1 : row), (col + 1) % 9))
+				if (solveSudoku((col == fieldsize-1 ? row + 1 : row), (col + 1) % fieldsize))
 					return true;
 
 				// failure, unmake & try again
@@ -222,8 +222,8 @@ public class Field {
 	 */
 	private boolean FindUnassignedLocation(int grid[][]) {
 
-		for (int row = 0; row < 9; row++)
-			for (int col = 0; col < 9; col++)
+		for (int row = 0; row < fieldsize; row++)
+			for (int col = 0; col < fieldsize; col++)
 				if (grid[row][col] == 0)
 					return true;
 		return false;
@@ -241,7 +241,7 @@ public class Field {
 	 * @return returns if the number fit in the Sudoku grid
 	 */
 	private boolean checkRow(int grid[][], int row, int num) {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < fieldsize; i++) {
 			if (grid[row][i] == num)
 				return false;
 		}
@@ -258,7 +258,7 @@ public class Field {
 	 * @return returns if the number fit in the Sudoku grid
 	 */
 	private boolean checkColumn(int grid[][], int column, int num) {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < fieldsize; i++) {
 			if (grid[i][column] == num)
 				return false;
 		}
@@ -278,11 +278,12 @@ public class Field {
 	 * @return returns if the number fit in the Sudoku grid
 	 */
 	private boolean checkBox(int grid[][], int row, int col, int num) {
-		int rowstart = row / 3;
-		int colstart = col / 3;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 3; x++) {
-				if (grid[rowstart * 3 + y][colstart * 3 + x] == num) {
+		final int boxsize=(int)Math.sqrt(fieldsize);
+		int rowstart = row / boxsize;
+		int colstart = col / boxsize;
+		for (int y = 0; y < boxsize; y++) {
+			for (int x = 0; x < boxsize; x++) {
+				if (grid[rowstart * boxsize + y][colstart * boxsize + x] == num) {
 					return false;
 				}
 			}
